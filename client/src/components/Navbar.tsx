@@ -5,6 +5,7 @@
  */
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLang } from "../contexts/LanguageContext";
 
 interface NavbarProps {
   activeSection: string;
@@ -21,6 +22,7 @@ const NAV_ITEMS = [
 
 export default function Navbar({ activeSection, onNavigate }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { lang, toggleLang } = useLang();
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
@@ -107,6 +109,28 @@ export default function Navbar({ activeSection, onNavigate }: NavbarProps) {
           ))}
         </div>
 
+        {/* Sélecteur de langue */}
+        <div className="px-3 pb-2">
+          <button
+            onClick={toggleLang}
+            className="w-full text-left px-3 py-2 text-xs transition-all duration-200 rounded-sm"
+            style={{
+              fontFamily: "JetBrains Mono, monospace",
+              color: "oklch(0.85 0.22 155)",
+              border: "1px solid oklch(0.85 0.22 155 / 0.3)",
+              background: "transparent",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.background = "oklch(0.85 0.22 155 / 0.08)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.background = "transparent";
+            }}
+          >
+            🌐 lang --switch {lang === "fr" ? "en" : "fr"}
+          </button>
+        </div>
+
         {/* Footer */}
         <div
           className="px-5 py-4 border-t text-xs"
@@ -140,17 +164,30 @@ export default function Navbar({ activeSection, onNavigate }: NavbarProps) {
         >
           SAMUEL_OS
         </div>
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="text-xs px-3 py-1.5"
-          style={{
-            color: "oklch(0.87 0.18 195)",
-            border: "1px solid oklch(0.87 0.18 195 / 0.3)",
-            fontFamily: "JetBrains Mono, monospace",
-          }}
-        >
-          {mobileOpen ? "[CLOSE]" : "[MENU]"}
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={toggleLang}
+            className="text-xs px-3 py-1.5"
+            style={{
+              color: "oklch(0.85 0.22 155)",
+              border: "1px solid oklch(0.85 0.22 155 / 0.3)",
+              fontFamily: "JetBrains Mono, monospace",
+            }}
+          >
+            [{lang === "fr" ? "EN" : "FR"}]
+          </button>
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="text-xs px-3 py-1.5"
+            style={{
+              color: "oklch(0.87 0.18 195)",
+              border: "1px solid oklch(0.87 0.18 195 / 0.3)",
+              fontFamily: "JetBrains Mono, monospace",
+            }}
+          >
+            {mobileOpen ? "[CLOSE]" : "[MENU]"}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}

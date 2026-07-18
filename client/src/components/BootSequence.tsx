@@ -5,6 +5,7 @@
  */
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLang } from "../contexts/LanguageContext";
 
 interface BootSequenceProps {
   onComplete: () => void;
@@ -19,18 +20,32 @@ const ASCII_ART = `
  ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝ ╚═════╝ ╚══════╝╚══════╝
 `;
 
-const BOOT_MESSAGES = [
-  { text: "SAMUEL_OS v2.0 — Initialisation du système...", delay: 0 },
-  { text: "Chargement des modules: [React] [Node.js] [PHP] [Python]", delay: 400 },
-  { text: "Vérification des compétences... OK", delay: 800 },
-  { text: "Connexion à la base de données de projets... OK", delay: 1200 },
-  { text: "Chargement du profil: CARIÉLUS Samuel — Développeur Web Junior", delay: 1600 },
-  { text: "Localisation: Montréal, QC, Canada", delay: 2000 },
-  { text: "Statut: DISPONIBLE POUR NOUVELLES OPPORTUNITÉS", delay: 2400 },
-  { text: "Démarrage de l'interface portfolio...", delay: 2900 },
-];
+const BOOT_MESSAGES = {
+  fr: [
+    { text: "SAMUEL_OS v2.1 — Initialisation du système...", delay: 0 },
+    { text: "Chargement des modules: [React] [Node.js] [PHP] [Python]", delay: 400 },
+    { text: "Vérification des compétences... OK", delay: 800 },
+    { text: "Connexion à la base de données de projets... OK", delay: 1200 },
+    { text: "Chargement du profil: CARIÉLUS Samuel — Développeur Web Junior", delay: 1600 },
+    { text: "Localisation: Montréal, QC, Canada", delay: 2000 },
+    { text: "Statut: DISPONIBLE POUR NOUVELLES OPPORTUNITÉS", delay: 2400 },
+    { text: "Démarrage de l'interface portfolio...", delay: 2900 },
+  ],
+  en: [
+    { text: "SAMUEL_OS v2.1 — System initialization...", delay: 0 },
+    { text: "Loading modules: [React] [Node.js] [PHP] [Python]", delay: 400 },
+    { text: "Verifying skills... OK", delay: 800 },
+    { text: "Connecting to projects database... OK", delay: 1200 },
+    { text: "Loading profile: CARIÉLUS Samuel — Junior Web Developer", delay: 1600 },
+    { text: "Location: Montreal, QC, Canada", delay: 2000 },
+    { text: "Status: AVAILABLE FOR NEW OPPORTUNITIES", delay: 2400 },
+    { text: "Starting portfolio interface...", delay: 2900 },
+  ],
+};
 
 export default function BootSequence({ onComplete }: BootSequenceProps) {
+  const { lang } = useLang();
+  const messages = BOOT_MESSAGES[lang];
   const [visibleMessages, setVisibleMessages] = useState<number[]>([]);
   const [showAscii, setShowAscii] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -41,10 +56,10 @@ export default function BootSequence({ onComplete }: BootSequenceProps) {
     const asciiTimer = setTimeout(() => setShowAscii(true), 200);
 
     // Show messages progressively
-    BOOT_MESSAGES.forEach((msg, i) => {
+    messages.forEach((msg, i) => {
       setTimeout(() => {
         setVisibleMessages((prev) => [...prev, i]);
-        setProgress(Math.round(((i + 1) / BOOT_MESSAGES.length) * 100));
+        setProgress(Math.round(((i + 1) / messages.length) * 100));
       }, msg.delay + 600);
     });
 
@@ -97,7 +112,7 @@ export default function BootSequence({ onComplete }: BootSequenceProps) {
 
             {/* Boot messages */}
             <div className="space-y-1 mb-6">
-              {BOOT_MESSAGES.map((msg, i) => (
+              {messages.map((msg, i) => (
                 <AnimatePresence key={i}>
                   {visibleMessages.includes(i) && (
                     <motion.div

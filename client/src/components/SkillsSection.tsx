@@ -4,8 +4,49 @@
  */
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { useLang } from "../contexts/LanguageContext";
+
+const TEXTS = {
+  fr: {
+    title: "Compétences",
+    techLabel: "// COMPÉTENCES TECHNIQUES — SCAN EN COURS...",
+    softLabel: "// SOFT SKILLS",
+    toolsLabel: "// OUTILS & ENV.",
+    langLabel: "// LANGUES",
+    softSkills: [
+      "Communication efficace",
+      "Travail d'équipe & collaboration",
+      "Autonomie & rigueur",
+      "Gestion du temps & priorisation",
+      "Curiosité & créativité",
+    ],
+    languages: [
+      { name: "Français", level: "Expert" },
+      { name: "Anglais", level: "Courant" },
+    ],
+  },
+  en: {
+    title: "Skills",
+    techLabel: "// TECHNICAL SKILLS — SCANNING...",
+    softLabel: "// SOFT SKILLS",
+    toolsLabel: "// TOOLS & ENV.",
+    langLabel: "// LANGUAGES",
+    softSkills: [
+      "Effective communication",
+      "Teamwork & collaboration",
+      "Autonomy & rigor",
+      "Time management & prioritization",
+      "Curiosity & creativity",
+    ],
+    languages: [
+      { name: "French", level: "Expert" },
+      { name: "English", level: "Fluent" },
+    ],
+  },
+};
 
 const TECH_SKILLS = [
+  { name: "Claude Code / Cursor / LLM APIs", level: 85, color: "oklch(0.87 0.18 195)" },
   { name: "HTML / CSS", level: 90, color: "oklch(0.87 0.18 195)" },
   { name: "JavaScript / TypeScript", level: 78, color: "oklch(0.87 0.18 195)" },
   { name: "React / React Native", level: 80, color: "oklch(0.87 0.18 195)" },
@@ -18,21 +59,16 @@ const TECH_SKILLS = [
   { name: "Java / JavaFX", level: 62, color: "oklch(0.85 0.22 155)" },
 ];
 
-const SOFT_SKILLS = [
-  "Communication efficace",
-  "Travail d'équipe & collaboration",
-  "Autonomie & rigueur",
-  "Gestion du temps & priorisation",
-  "Curiosité & créativité",
-];
-
 const TOOLS = [
-  "VS Code", "Visual Studio", "NetBeans", "PyCharm",
-  "Git", "Linux (Ubuntu/Debian)", "macOS", "Windows",
+  "Claude Code", "Cursor", "API Claude", "N8N",
+  "Prompt Engineering", "FastAPI", "Supabase",
+  "VS Code", "Git", "Linux (Ubuntu/Debian)", "macOS",
   "Expo", "ARIA / Accessibilité",
 ];
 
 export default function SkillsSection() {
+  const { lang } = useLang();
+  const t = TEXTS[lang];
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -46,23 +82,7 @@ export default function SkillsSection() {
   }, []);
 
   return (
-    <section
-      id="skills"
-      ref={ref}
-      className="py-20 relative"
-      style={{
-        backgroundImage: `url(https://d2xsxph8kpxj0f.cloudfront.net/310519663102982137/Da7gq8UmgQR22is9BJu7Sz/skills-bg-oEv2hrtfU4x5f57wh4bxyr.webp)`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
-      }}
-    >
-      {/* Overlay */}
-      <div
-        className="absolute inset-0"
-        style={{ background: "oklch(0.08 0.01 265 / 0.93)" }}
-      />
-
+    <section id="skills" ref={ref} className="py-20 relative">
       <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-10">
         {/* Header */}
         <motion.div
@@ -86,7 +106,7 @@ export default function SkillsSection() {
               textShadow: "0 0 20px oklch(0.87 0.18 195 / 0.3)",
             }}
           >
-            Compétences
+            {t.title}
           </h2>
           <div
             className="mt-2 h-px w-24"
@@ -111,7 +131,7 @@ export default function SkillsSection() {
                 className="text-xs mb-4"
                 style={{ color: "oklch(0.87 0.18 195)", fontFamily: "JetBrains Mono, monospace" }}
               >
-                // COMPÉTENCES TECHNIQUES — SCAN EN COURS...
+                {t.techLabel}
               </div>
               <div className="space-y-4">
                 {TECH_SKILLS.map((skill, i) => (
@@ -171,10 +191,10 @@ export default function SkillsSection() {
                 className="text-xs mb-3"
                 style={{ color: "oklch(0.7 0.28 295)", fontFamily: "JetBrains Mono, monospace" }}
               >
-                // SOFT SKILLS
+                {t.softLabel}
               </div>
               <div className="space-y-2">
-                {SOFT_SKILLS.map((skill, i) => (
+                {t.softSkills.map((skill, i) => (
                   <motion.div
                     key={skill}
                     initial={{ opacity: 0, x: 10 }}
@@ -205,7 +225,7 @@ export default function SkillsSection() {
                 className="text-xs mb-3"
                 style={{ color: "oklch(0.85 0.22 155)", fontFamily: "JetBrains Mono, monospace" }}
               >
-                // OUTILS & ENV.
+                {t.toolsLabel}
               </div>
               <div className="flex flex-wrap gap-2">
                 {TOOLS.map((tool, i) => (
@@ -243,16 +263,16 @@ export default function SkillsSection() {
                 className="text-xs mb-3"
                 style={{ color: "oklch(0.87 0.18 195)", fontFamily: "JetBrains Mono, monospace" }}
               >
-                // LANGUES
+                {t.langLabel}
               </div>
               <div className="space-y-2 text-xs" style={{ fontFamily: "JetBrains Mono, monospace" }}>
                 <div className="flex justify-between">
-                  <span style={{ color: "oklch(0.72 0.02 200)" }}>Français</span>
-                  <span style={{ color: "oklch(0.87 0.18 195)" }}>Expert</span>
+                  <span style={{ color: "oklch(0.72 0.02 200)" }}>{t.languages[0].name}</span>
+                  <span style={{ color: "oklch(0.87 0.18 195)" }}>{t.languages[0].level}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span style={{ color: "oklch(0.72 0.02 200)" }}>Anglais</span>
-                  <span style={{ color: "oklch(0.85 0.22 155)" }}>Courant</span>
+                  <span style={{ color: "oklch(0.72 0.02 200)" }}>{t.languages[1].name}</span>
+                  <span style={{ color: "oklch(0.85 0.22 155)" }}>{t.languages[1].level}</span>
                 </div>
               </div>
             </motion.div>

@@ -4,8 +4,52 @@
  */
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { useLang } from "../contexts/LanguageContext";
+
+const TEXTS = {
+  fr: {
+    infoLabel: "// INFORMATIONS DE CONTACT",
+    infoItems: [
+      { icon: "📧", label: "Email", value: "carielus2@gmail.com", href: "mailto:carielus2@gmail.com" },
+      { icon: "📱", label: "Téléphone", value: "438-887-0785", href: "tel:4388870785" },
+      { icon: "📍", label: "Localisation", value: "Montréal, QC H1J 1W2", href: null },
+    ],
+    statusLine: "STATUT: DISPONIBLE",
+    statusText: "Ouvert aux opportunités de travail, stages et collaborations. Réponse sous 24h.",
+    successTitle: "[SUCCESS] Message envoyé !",
+    successText: "Je vous répondrai dans les plus brefs délais.",
+    nameLabel: "$ nom --required",
+    namePlaceholder: "Votre nom complet",
+    emailLabel: "$ email --required",
+    emailPlaceholder: "votre@email.com",
+    messageLabel: "$ message --required",
+    messagePlaceholder: "Votre message...",
+    submit: "[ENVOYER_MESSAGE]",
+  },
+  en: {
+    infoLabel: "// CONTACT INFO",
+    infoItems: [
+      { icon: "📧", label: "Email", value: "carielus2@gmail.com", href: "mailto:carielus2@gmail.com" },
+      { icon: "📱", label: "Phone", value: "438-887-0785", href: "tel:4388870785" },
+      { icon: "📍", label: "Location", value: "Montreal, QC H1J 1W2", href: null },
+    ],
+    statusLine: "STATUS: AVAILABLE",
+    statusText: "Open to job opportunities, internships and collaborations. Reply within 24h.",
+    successTitle: "[SUCCESS] Message sent!",
+    successText: "I will get back to you as soon as possible.",
+    nameLabel: "$ name --required",
+    namePlaceholder: "Your full name",
+    emailLabel: "$ email --required",
+    emailPlaceholder: "your@email.com",
+    messageLabel: "$ message --required",
+    messagePlaceholder: "Your message...",
+    submit: "[SEND_MESSAGE]",
+  },
+};
 
 export default function ContactSection() {
+  const { lang } = useLang();
+  const t = TEXTS[lang];
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", message: "" });
@@ -21,10 +65,39 @@ export default function ContactSection() {
     return () => observer.disconnect();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Clé publique Web3Forms : les messages du formulaire sont relayés
+  // vers carielus2@gmail.com. Clé à générer sur https://web3forms.com
+  const WEB3FORMS_ACCESS_KEY = "cc5e2e41-bd1b-4987-a4f3-cd56f77d98cb";
+
+  const [sending, setSending] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate form submission
-    setSubmitted(true);
+    if (sending) return;
+    setSending(true);
+    try {
+      const reponse = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: `Portfolio — message de ${form.name}`,
+          name: form.name,
+          email: form.email,
+          message: form.message,
+        }),
+      });
+      if (!reponse.ok) throw new Error("envoi refusé");
+      setSubmitted(true);
+    } catch {
+      alert(
+        lang === "fr"
+          ? "L'envoi a échoué — écris-moi directement à carielus2@gmail.com"
+          : "Sending failed — email me directly at carielus2@gmail.com"
+      );
+    } finally {
+      setSending(false);
+    }
   };
 
   const inputStyle = (field: string) => ({
@@ -41,21 +114,7 @@ export default function ContactSection() {
   });
 
   return (
-    <section
-      id="contact"
-      ref={ref}
-      className="py-20 relative"
-      style={{
-        backgroundImage: `url(https://d2xsxph8kpxj0f.cloudfront.net/310519663102982137/Da7gq8UmgQR22is9BJu7Sz/contact-bg-PwqtXo9LiXjS9BdTjngGPY.webp)`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      {/* Overlay */}
-      <div
-        className="absolute inset-0"
-        style={{ background: "oklch(0.08 0.01 265 / 0.92)" }}
-      />
+    <section id="contact" ref={ref} className="py-20 relative">
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-10">
         {/* Header */}
@@ -107,15 +166,11 @@ export default function ContactSection() {
                 className="text-xs mb-4"
                 style={{ color: "oklch(0.87 0.18 195)", fontFamily: "JetBrains Mono, monospace" }}
               >
-                // INFORMATIONS DE CONTACT
+                {t.infoLabel}
               </div>
 
               <div className="space-y-4">
-                {[
-                  { icon: "📧", label: "Email", value: "carielus2@gmail.com", href: "mailto:carielus2@gmail.com" },
-                  { icon: "📱", label: "Téléphone", value: "438-887-0785", href: "tel:4388870785" },
-                  { icon: "📍", label: "Localisation", value: "Montréal, QC H1J 1W2", href: null },
-                ].map((item) => (
+                {t.infoItems.map((item) => (
                   <div key={item.label} className="flex items-start gap-3">
                     <span className="text-lg">{item.icon}</span>
                     <div>
@@ -178,14 +233,14 @@ export default function ContactSection() {
                   className="text-xs"
                   style={{ color: "oklch(0.85 0.22 155)", fontFamily: "JetBrains Mono, monospace" }}
                 >
-                  STATUT: DISPONIBLE
+                  {t.statusLine}
                 </span>
               </div>
               <p
                 className="text-xs"
                 style={{ color: "oklch(0.62 0.02 200)", fontFamily: "Space Grotesk, sans-serif" }}
               >
-                Ouvert aux opportunités de travail, stages et collaborations. Réponse sous 24h.
+                {t.statusText}
               </p>
             </div>
           </motion.div>
@@ -238,13 +293,13 @@ export default function ContactSection() {
                     className="text-sm mb-1"
                     style={{ color: "oklch(0.85 0.22 155)", fontFamily: "JetBrains Mono, monospace" }}
                   >
-                    [SUCCESS] Message envoyé !
+                    {t.successTitle}
                   </div>
                   <div
                     className="text-xs"
                     style={{ color: "oklch(0.55 0.02 200)", fontFamily: "JetBrains Mono, monospace" }}
                   >
-                    Je vous répondrai dans les plus brefs délais.
+                    {t.successText}
                   </div>
                 </motion.div>
               ) : (
@@ -254,7 +309,7 @@ export default function ContactSection() {
                       className="block text-xs mb-1.5"
                       style={{ color: "oklch(0.55 0.02 200)", fontFamily: "JetBrains Mono, monospace" }}
                     >
-                      $ nom --required
+                      {t.nameLabel}
                     </label>
                     <input
                       type="text"
@@ -263,7 +318,7 @@ export default function ContactSection() {
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
                       onFocus={() => setFocused("name")}
                       onBlur={() => setFocused(null)}
-                      placeholder="Votre nom complet"
+                      placeholder={t.namePlaceholder}
                       style={inputStyle("name") as React.CSSProperties}
                     />
                   </div>
@@ -272,7 +327,7 @@ export default function ContactSection() {
                       className="block text-xs mb-1.5"
                       style={{ color: "oklch(0.55 0.02 200)", fontFamily: "JetBrains Mono, monospace" }}
                     >
-                      $ email --required
+                      {t.emailLabel}
                     </label>
                     <input
                       type="email"
@@ -281,7 +336,7 @@ export default function ContactSection() {
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
                       onFocus={() => setFocused("email")}
                       onBlur={() => setFocused(null)}
-                      placeholder="votre@email.com"
+                      placeholder={t.emailPlaceholder}
                       style={inputStyle("email") as React.CSSProperties}
                     />
                   </div>
@@ -290,7 +345,7 @@ export default function ContactSection() {
                       className="block text-xs mb-1.5"
                       style={{ color: "oklch(0.55 0.02 200)", fontFamily: "JetBrains Mono, monospace" }}
                     >
-                      $ message --required
+                      {t.messageLabel}
                     </label>
                     <textarea
                       required
@@ -299,7 +354,7 @@ export default function ContactSection() {
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
                       onFocus={() => setFocused("message")}
                       onBlur={() => setFocused(null)}
-                      placeholder="Votre message..."
+                      placeholder={t.messagePlaceholder}
                       style={{ ...inputStyle("message") as React.CSSProperties, resize: "none" }}
                     />
                   </div>
@@ -319,7 +374,7 @@ export default function ContactSection() {
                       (e.currentTarget as HTMLElement).style.boxShadow = "0 0 15px oklch(0.87 0.18 195 / 0.3)";
                     }}
                   >
-                    [ENVOYER_MESSAGE]
+                    {t.submit}
                   </button>
                 </form>
               )}

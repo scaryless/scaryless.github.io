@@ -4,39 +4,108 @@
  */
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { useLang } from "../contexts/LanguageContext";
 
-const PROJECTS = [
-  {
-    id: "01",
-    title: "Application Mobile Client",
-    company: "ProPro Media inc",
-    description: "Application mobile développée durant le stage chez ProPro Media inc. Mise en place de l'authentification utilisateur, développement de fonctionnalités front-end avec React Native, opérations CRUD complètes et correction de bugs.",
-    tags: ["React Native", "Expo", "JavaScript", "CRUD", "Auth"],
-    status: "COMPLETED",
-    color: "oklch(0.87 0.18 195)",
-    year: "2025",
+const DATA = {
+  fr: {
+    title: "Projets",
+    githubLink: "→ voir le code sur GitHub",
+    comingSoon: "// Plus de projets à venir — En cours de développement...",
+    projects: [
+      {
+        id: "01",
+        title: "FactureFlow — Extraction de factures par IA",
+        company: "Projet personnel",
+        description: "Pipeline complet d'automatisation : factures PDF et photos de reçus analysées par IA (Claude), validation programmatique avec boucle d'autocorrection, détection de doublons, API FastAPI, base PostgreSQL (Supabase), tableau de bord React et ingestion par courriel orchestrée avec N8N. Journal de bord technique documentant chaque défi.",
+        tags: ["Python", "FastAPI", "Claude AI", "Supabase", "React", "N8N"],
+        status: "LIVE",
+        color: "oklch(0.87 0.18 195)",
+        year: "2026",
+        link: "https://github.com/scaryless/FactureFlow",
+      },
+      {
+        id: "02",
+        title: "Application Mobile Client",
+        company: "ProPro Media inc",
+        description: "Application mobile développée durant le stage chez ProPro Media inc. Mise en place de l'authentification utilisateur, développement de fonctionnalités front-end avec React Native, opérations CRUD complètes et correction de bugs.",
+        tags: ["React Native", "Expo", "JavaScript", "CRUD", "Auth"],
+        status: "COMPLETED",
+        color: "oklch(0.87 0.18 195)",
+        year: "2025",
+      },
+      {
+        id: "03",
+        title: "Portfolio Personnel",
+        company: "Projet personnel",
+        description: "Ce portfolio interactif style terminal cyberpunk. Développé avec React, TypeScript, Framer Motion et Tailwind CSS. Concept SAMUEL_OS avec boot sequence animée, effets néon et navigation terminal.",
+        tags: ["React", "TypeScript", "Framer Motion", "Tailwind CSS"],
+        status: "LIVE",
+        color: "oklch(0.85 0.22 155)",
+        year: "2025",
+        link: "https://github.com/scaryless/scaryless.github.io",
+      },
+      {
+        id: "04",
+        title: "Projets Académiques",
+        company: "Collège Gérald-Godin",
+        description: "Ensemble de projets réalisés durant la formation AEC en Programmation Web : applications PHP/MySQL, projets ASP.NET Core MVC, interfaces Angular et Vue.js, applications Java avec JavaFX.",
+        tags: ["PHP", "ASP.NET", "Angular", "Vue.js", "Java", "MySQL"],
+        status: "ACADEMIC",
+        color: "oklch(0.7 0.28 295)",
+        year: "2024-2025",
+      },
+    ],
   },
-  {
-    id: "02",
-    title: "Portfolio Personnel",
-    company: "Projet personnel",
-    description: "Ce portfolio interactif style terminal cyberpunk. Développé avec React, TypeScript, Framer Motion et Tailwind CSS. Concept SAMUEL_OS avec boot sequence animée, effets néon et navigation terminal.",
-    tags: ["React", "TypeScript", "Framer Motion", "Tailwind CSS"],
-    status: "LIVE",
-    color: "oklch(0.85 0.22 155)",
-    year: "2025",
+  en: {
+    title: "Projects",
+    githubLink: "→ view code on GitHub",
+    comingSoon: "// More projects coming — Under development...",
+    projects: [
+      {
+        id: "01",
+        title: "FactureFlow — AI Invoice Extraction",
+        company: "Personal project",
+        description: "Complete automation pipeline: PDF invoices and receipt photos analyzed by AI (Claude), programmatic validation with a self-correction loop, duplicate detection, FastAPI backend, PostgreSQL database (Supabase), React dashboard and email ingestion orchestrated with N8N. Includes a technical logbook documenting every challenge.",
+        tags: ["Python", "FastAPI", "Claude AI", "Supabase", "React", "N8N"],
+        status: "LIVE",
+        color: "oklch(0.87 0.18 195)",
+        year: "2026",
+        link: "https://github.com/scaryless/FactureFlow",
+      },
+      {
+        id: "02",
+        title: "Client Mobile App",
+        company: "ProPro Media inc",
+        description: "Mobile application built during the internship at ProPro Media inc. User authentication setup, front-end feature development with React Native, full CRUD operations and bug fixes.",
+        tags: ["React Native", "Expo", "JavaScript", "CRUD", "Auth"],
+        status: "COMPLETED",
+        color: "oklch(0.87 0.18 195)",
+        year: "2025",
+      },
+      {
+        id: "03",
+        title: "Personal Portfolio",
+        company: "Personal project",
+        description: "This interactive cyberpunk terminal portfolio. Built with React, TypeScript, Framer Motion and Tailwind CSS. SAMUEL_OS concept with animated boot sequence, neon effects and terminal navigation.",
+        tags: ["React", "TypeScript", "Framer Motion", "Tailwind CSS"],
+        status: "LIVE",
+        color: "oklch(0.85 0.22 155)",
+        year: "2025",
+        link: "https://github.com/scaryless/scaryless.github.io",
+      },
+      {
+        id: "04",
+        title: "Academic Projects",
+        company: "Collège Gérald-Godin",
+        description: "A collection of projects built during the Web Programming AEC: PHP/MySQL applications, ASP.NET Core MVC projects, Angular and Vue.js interfaces, Java applications with JavaFX.",
+        tags: ["PHP", "ASP.NET", "Angular", "Vue.js", "Java", "MySQL"],
+        status: "ACADEMIC",
+        color: "oklch(0.7 0.28 295)",
+        year: "2024-2025",
+      },
+    ],
   },
-  {
-    id: "03",
-    title: "Projets Académiques",
-    company: "Collège Gérald-Godin",
-    description: "Ensemble de projets réalisés durant la formation AEC en Programmation Web : applications PHP/MySQL, projets ASP.NET Core MVC, interfaces Angular et Vue.js, applications Java avec JavaFX.",
-    tags: ["PHP", "ASP.NET", "Angular", "Vue.js", "Java", "MySQL"],
-    status: "ACADEMIC",
-    color: "oklch(0.7 0.28 295)",
-    year: "2024-2025",
-  },
-];
+};
 
 const STATUS_COLORS: Record<string, string> = {
   COMPLETED: "oklch(0.87 0.18 195)",
@@ -45,6 +114,8 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export default function ProjectsSection() {
+  const { lang } = useLang();
+  const t = DATA[lang];
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -82,7 +153,7 @@ export default function ProjectsSection() {
               textShadow: "0 0 20px oklch(0.87 0.18 195 / 0.3)",
             }}
           >
-            Projets
+            {t.title}
           </h2>
           <div
             className="mt-2 h-px w-24"
@@ -92,7 +163,7 @@ export default function ProjectsSection() {
 
         {/* Project cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {PROJECTS.map((project, i) => (
+          {t.projects.map((project, i) => (
             <motion.div
               key={project.id}
               initial={{ opacity: 0, y: 30 }}
@@ -176,6 +247,23 @@ export default function ProjectsSection() {
                   </span>
                 ))}
               </div>
+
+              {/* Lien GitHub */}
+              {"link" in project && project.link && (
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 text-xs inline-block transition-opacity hover:opacity-70"
+                  style={{
+                    color: project.color,
+                    fontFamily: "JetBrains Mono, monospace",
+                    textShadow: `0 0 10px ${project.color.replace(")", " / 0.4)")}`,
+                  }}
+                >
+                  {t.githubLink}
+                </a>
+              )}
             </motion.div>
           ))}
         </div>
@@ -195,7 +283,7 @@ export default function ProjectsSection() {
             className="text-xs"
             style={{ color: "oklch(0.45 0.02 200)", fontFamily: "JetBrains Mono, monospace" }}
           >
-            // Plus de projets à venir — En cours de développement...
+            {t.comingSoon}
             <span style={{ animation: "blink 1s step-end infinite", color: "oklch(0.87 0.18 195)" }}> █</span>
           </span>
         </motion.div>

@@ -5,22 +5,41 @@
  */
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { useLang } from "../contexts/LanguageContext";
 
-const TYPING_LINES = [
-  "Développeur Web Junior",
-  "React & Node.js Developer",
-  "Mobile App Builder",
-  "Passionné d'IA & Machine Learning",
-];
+const TEXTS = {
+  fr: {
+    typing: [
+      "Développeur Web Junior",
+      "React & Node.js Developer",
+      "Mobile App Builder",
+      "Passionné d'IA & Machine Learning",
+    ],
+    bio: "Curieux depuis l'enfance, du genre à vouloir comprendre la machine plutôt que juste m'en servir. Je pense, je code et je livre. Diplômé de l'AEC en programmation en technologies Web du Collège Gérald-Godin, je travaille comme développeur solo avec une approche AI-first : Claude Code, Cursor et les API de LLM font partie de mon quotidien. Applications web, chatbots, automatisation pour de vrais clients, dont FactureFlow, mon pipeline d'extraction de factures. Je cherche maintenant une équipe pour livrer plus grand.",
+    scroll: "scroll pour explorer",
+  },
+  en: {
+    typing: [
+      "Junior Web Developer",
+      "React & Node.js Developer",
+      "Mobile App Builder",
+      "AI & Machine Learning Enthusiast",
+    ],
+    bio: "Curious since childhood, the kind of kid who wanted to understand the machine rather than just use it. I think, I code, I ship. A graduate of the Web Technologies Programming program (AEC) at Collège Gérald-Godin, I work as a solo developer with an AI-first approach: Claude Code, Cursor and LLM APIs are part of my daily workflow. Web apps, chatbots and automation for real clients, including FactureFlow, my invoice extraction pipeline. Now looking for a team to ship bigger things.",
+    scroll: "scroll to explore",
+  },
+};
 
 export default function HeroSection() {
+  const { lang } = useLang();
+  const t = TEXTS[lang];
   const [lineIndex, setLineIndex] = useState(0);
   const [displayed, setDisplayed] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [showCursor, setShowCursor] = useState(true);
 
   useEffect(() => {
-    const current = TYPING_LINES[lineIndex];
+    const current = t.typing[lineIndex];
     let timeout: ReturnType<typeof setTimeout>;
 
     if (!isDeleting && displayed.length < current.length) {
@@ -31,11 +50,18 @@ export default function HeroSection() {
       timeout = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 40);
     } else if (isDeleting && displayed.length === 0) {
       setIsDeleting(false);
-      setLineIndex((prev) => (prev + 1) % TYPING_LINES.length);
+      setLineIndex((prev) => (prev + 1) % t.typing.length);
     }
 
     return () => clearTimeout(timeout);
-  }, [displayed, isDeleting, lineIndex]);
+  }, [displayed, isDeleting, lineIndex, t]);
+
+  // Repartir proprement quand la langue change
+  useEffect(() => {
+    setDisplayed("");
+    setIsDeleting(false);
+    setLineIndex(0);
+  }, [lang]);
 
   useEffect(() => {
     const interval = setInterval(() => setShowCursor((v) => !v), 530);
@@ -93,7 +119,7 @@ export default function HeroSection() {
           className="text-xs mb-2"
           style={{ color: "oklch(0.55 0.02 200)", fontFamily: "JetBrains Mono, monospace" }}
         >
-          Last login: Sun Mar 29 2026 — SAMUEL_OS v2.0
+          Last login: {new Date().toDateString()} — SAMUEL_OS v2.1
         </motion.div>
 
         {/* Name */}
@@ -173,7 +199,7 @@ export default function HeroSection() {
             className="text-sm leading-relaxed"
             style={{ color: "oklch(0.72 0.02 200)", fontFamily: "Space Grotesk, sans-serif" }}
           >
-            Récemment diplômé d'une AEC en Programmation en technologies Web, motivé par les défis et passionné d'IA. Je cherche à intégrer une équipe qui me permettra de grandir tant au niveau de mon expérience que dans mes compétences techniques.
+            {t.bio}
           </p>
         </motion.div>
 
@@ -240,7 +266,7 @@ export default function HeroSection() {
           >
             ↓
           </motion.div>
-          <span>scroll pour explorer</span>
+          <span>{t.scroll}</span>
         </motion.div>
       </div>
 

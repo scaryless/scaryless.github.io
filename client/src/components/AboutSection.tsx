@@ -4,25 +4,56 @@
  */
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { useLang } from "../contexts/LanguageContext";
 
-const INFO_ITEMS = [
-  { key: "name", value: "Samuel Cariélus" },
-  { key: "role", value: "Développeur Web Junior" },
-  { key: "location", value: "Montréal, QC, Canada" },
-  { key: "email", value: "carielus2@gmail.com" },
-  { key: "phone", value: "438-887-0785" },
-  { key: "languages", value: "Français (Expert), Anglais (Courant)" },
-  { key: "status", value: "DISPONIBLE — Ouvert aux opportunités" },
-];
-
-const INTERESTS = [
-  "🎵 Composition musicale & instrumentales",
-  "✈️ Voyages & découverte de cultures",
-  "🤖 Machine Learning & Intelligence Artificielle",
-  "💡 Prototypage rapide d'idées",
-];
+const TEXTS = {
+  fr: {
+    title: "À propos de moi",
+    infoItems: [
+      { key: "name", value: "Samuel Cariélus" },
+      { key: "role", value: "Développeur Web Junior" },
+      { key: "location", value: "Montréal, QC, Canada" },
+      { key: "email", value: "carielus2@gmail.com" },
+      { key: "phone", value: "438-887-0785" },
+      { key: "languages", value: "Français (Expert), Anglais (Courant)" },
+      { key: "status", value: "DISPONIBLE — Ouvert aux opportunités" },
+    ],
+    interestsLabel: "// CENTRES D'INTÉRÊTS",
+    interests: [
+      "🎵 Composition musicale & instrumentales",
+      "✈️ Voyages & découverte de cultures",
+      "🤖 Machine Learning & Intelligence Artificielle",
+      "💡 Prototypage rapide d'idées",
+    ],
+    description:
+      "Développeur web junior basé à Montréal, je combine une formation en technologies web et une expérience de développeur solo auprès de vrais clients. Rigoureux et persévérant, je trouve ma satisfaction dans le travail bien fait et la réussite d'équipe. J'utilise l'IA au quotidien (Claude Code, Cursor, API de LLM) pour livrer plus vite et plus efficacement.",
+  },
+  en: {
+    title: "About me",
+    infoItems: [
+      { key: "name", value: "Samuel Cariélus" },
+      { key: "role", value: "Junior Web Developer" },
+      { key: "location", value: "Montreal, QC, Canada" },
+      { key: "email", value: "carielus2@gmail.com" },
+      { key: "phone", value: "438-887-0785" },
+      { key: "languages", value: "French (Expert), English (Fluent)" },
+      { key: "status", value: "AVAILABLE — Open to opportunities" },
+    ],
+    interestsLabel: "// INTERESTS",
+    interests: [
+      "🎵 Music composition & instrumentals",
+      "✈️ Travel & discovering cultures",
+      "🤖 Machine Learning & Artificial Intelligence",
+      "💡 Rapid idea prototyping",
+    ],
+    description:
+      "Junior web developer based in Montreal, combining formal training in web technologies with hands-on experience as a solo developer for real clients. Rigorous and persistent, I find satisfaction in work done right and in team success. I use AI daily (Claude Code, Cursor, LLM APIs) to ship faster and more efficiently.",
+  },
+};
 
 export default function AboutSection() {
+  const { lang } = useLang();
+  const t = TEXTS[lang];
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -60,7 +91,7 @@ export default function AboutSection() {
               textShadow: "0 0 20px oklch(0.87 0.18 195 / 0.3)",
             }}
           >
-            À propos de moi
+            {t.title}
           </h2>
           <div
             className="mt-2 h-px w-24"
@@ -99,7 +130,7 @@ export default function AboutSection() {
             {/* JSON-style info */}
             <div className="space-y-1.5 text-xs" style={{ fontFamily: "JetBrains Mono, monospace" }}>
               <div style={{ color: "oklch(0.87 0.18 195 / 0.6)" }}>{"{"}</div>
-              {INFO_ITEMS.map((item, i) => (
+              {t.infoItems.map((item, i) => (
                 <motion.div
                   key={item.key}
                   initial={{ opacity: 0, x: -10 }}
@@ -112,7 +143,7 @@ export default function AboutSection() {
                   <span style={{ color: item.key === "status" ? "oklch(0.85 0.22 155)" : "oklch(0.87 0.18 195 / 0.9)" }}>
                     "{item.value}"
                   </span>
-                  {i < INFO_ITEMS.length - 1 && <span style={{ color: "oklch(0.55 0.02 200)" }}>,</span>}
+                  {i < t.infoItems.length - 1 && <span style={{ color: "oklch(0.55 0.02 200)" }}>,</span>}
                 </motion.div>
               ))}
               <div style={{ color: "oklch(0.87 0.18 195 / 0.6)" }}>{"}"}</div>
@@ -142,7 +173,7 @@ export default function AboutSection() {
                 className="text-sm leading-relaxed"
                 style={{ color: "oklch(0.72 0.02 200)", fontFamily: "Space Grotesk, sans-serif" }}
               >
-                Motivé par les défis, je suis une personne qui n'abandonne jamais et qui trouve sa satisfaction dans la réussite collective et un travail accompli. J'aimerais intégrer une équipe qui me permettra de grandir tant au niveau de mon expérience de travail que dans mes compétences techniques.
+                {t.description}
               </p>
             </motion.div>
 
@@ -161,10 +192,10 @@ export default function AboutSection() {
                 className="text-xs mb-3"
                 style={{ color: "oklch(0.87 0.18 195)", fontFamily: "JetBrains Mono, monospace" }}
               >
-                // CENTRES D'INTÉRÊTS
+                {t.interestsLabel}
               </div>
               <div className="space-y-2">
-                {INTERESTS.map((interest, i) => (
+                {t.interests.map((interest, i) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, x: 10 }}

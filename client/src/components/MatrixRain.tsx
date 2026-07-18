@@ -28,10 +28,10 @@ export default function MatrixRain() {
     const drops: number[] = Array(columns).fill(1);
 
     const colors = [
-      "rgba(0, 245, 255, 0.8)",
-      "rgba(0, 245, 255, 0.5)",
-      "rgba(123, 47, 255, 0.6)",
-      "rgba(0, 245, 255, 0.3)",
+      "rgba(0, 245, 255, 1)",
+      "rgba(0, 245, 255, 0.75)",
+      "rgba(123, 47, 255, 0.85)",
+      "rgba(140, 255, 170, 0.7)",
     ];
 
     let animId: number;
@@ -71,7 +71,7 @@ export default function MatrixRain() {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none"
-      style={{ opacity: 0.15, zIndex: 0 }}
+      style={{ opacity: 0.3, zIndex: 0 }}
     />
   );
 }

@@ -4,59 +4,132 @@
  */
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { useLang } from "../contexts/LanguageContext";
 
-const EXPERIENCES = [
-  {
-    type: "work",
-    title: "Stagiaire Développeur",
-    company: "ProPro Media inc",
-    period: "Juin 2025 — Août 2025",
-    description: "Développement d'une application mobile pour un client avec l'aide et le suivi d'un mentor. Mise en place de l'authentification utilisateur, développement de fonctionnalités front-end avec React, opérations CRUD, tests et corrections de bugs.",
-    tags: ["React Native", "Expo", "CRUD", "Auth"],
-    color: "oklch(0.87 0.18 195)",
+const DATA = {
+  fr: {
+    title: "Parcours",
+    workLabel: "// EXPÉRIENCES DE TRAVAIL",
+    eduLabel: "// ÉDUCATION",
+    stats: [
+      { value: "2+", label: "ans d'exp. dev" },
+      { value: "15+", label: "technos" },
+      { value: "AI-first", label: "approche" },
+    ],
+    experiences: [
+      {
+        type: "work",
+        title: "Fondateur & Développeur Full-Stack",
+        company: "Évolution B inc",
+        period: "Mars 2024 — Aujourd'hui",
+        description: "Conception et développement d'applications web et de chatbots d'IA pour différents clients, de l'analyse du besoin jusqu'à la mise en production. Gestion des projets en autonomie complète : échanges avec les clients, présentation des solutions, livraison et suivi.",
+        tags: ["IA", "Chatbots", "API REST", "Autonomie"],
+        color: "oklch(0.87 0.18 195)",
+      },
+      {
+        type: "work",
+        title: "Stagiaire Développeur",
+        company: "ProPro Media inc",
+        period: "Mai 2025 — Septembre 2025",
+        description: "Développement d'une application mobile pour un client avec l'aide et le suivi d'un mentor. Mise en place de l'authentification utilisateur, développement de fonctionnalités front-end avec React, opérations CRUD, tests et corrections de bugs.",
+        tags: ["React Native", "Expo", "CRUD", "Auth"],
+        color: "oklch(0.87 0.18 195)",
+      },
+      {
+        type: "work",
+        title: "Chauffeur-Livreur",
+        company: "Recyclage Philtex",
+        period: "Juin 2014 — Avril 2024",
+        description: "Collecte de dons dans toute la province du Québec, en contact quotidien avec les clients et les organismes. Dix ans de gestion autonome des priorités, des itinéraires et des horaires.",
+        tags: ["Logistique", "Communication", "Organisation"],
+        color: "oklch(0.7 0.28 295)",
+      },
+    ],
+    education: [
+      {
+        degree: "AEC — Programmation en technologies Web",
+        school: "Collège Gérald-Godin",
+        period: "Avril 2024 — Sept 2025",
+        color: "oklch(0.87 0.18 195)",
+      },
+      {
+        degree: "DEC — Sciences Humaines",
+        school: "Vanier College",
+        period: "Sept 2009 — Mai 2014",
+        color: "oklch(0.85 0.22 155)",
+      },
+      {
+        degree: "Diplôme d'études secondaires",
+        school: "Collège Mont-Royal",
+        period: "Sept 2004 — Juin 2009",
+        color: "oklch(0.85 0.22 155)",
+      },
+    ],
   },
-  {
-    type: "work",
-    title: "Installateur de signalisation routière",
-    company: "Brunet",
-    period: "Mai 2019 — Sept 2022",
-    description: "Respect des devis de fermeture de routes. Communication régulière avec l'équipe pour rester synchronisé. Respect des normes de la Commission des Transports du Québec.",
-    tags: ["Travail d'équipe", "Rigueur", "Normes CTQ"],
-    color: "oklch(0.7 0.28 295)",
+  en: {
+    title: "Background",
+    workLabel: "// WORK EXPERIENCE",
+    eduLabel: "// EDUCATION",
+    stats: [
+      { value: "2+", label: "yrs dev exp." },
+      { value: "15+", label: "techs" },
+      { value: "AI-first", label: "approach" },
+    ],
+    experiences: [
+      {
+        type: "work",
+        title: "Founder & Full-Stack Developer",
+        company: "Évolution B inc",
+        period: "March 2024 — Today",
+        description: "Design and development of web applications and AI chatbots for various clients, from needs analysis to production. Fully autonomous project management: client communication, solution presentations, delivery and follow-up.",
+        tags: ["AI", "Chatbots", "REST API", "Autonomy"],
+        color: "oklch(0.87 0.18 195)",
+      },
+      {
+        type: "work",
+        title: "Developer Intern",
+        company: "ProPro Media inc",
+        period: "May 2025 — September 2025",
+        description: "Development of a mobile application for a client with the guidance of a mentor. User authentication setup, front-end feature development with React, CRUD operations, testing and bug fixes.",
+        tags: ["React Native", "Expo", "CRUD", "Auth"],
+        color: "oklch(0.87 0.18 195)",
+      },
+      {
+        type: "work",
+        title: "Delivery Driver",
+        company: "Recyclage Philtex",
+        period: "June 2014 — April 2024",
+        description: "Donation collection across the province of Quebec, in daily contact with clients and organizations. Ten years of autonomous management of priorities, routes and schedules.",
+        tags: ["Logistics", "Communication", "Organization"],
+        color: "oklch(0.7 0.28 295)",
+      },
+    ],
+    education: [
+      {
+        degree: "AEC — Web Technologies Programming",
+        school: "Collège Gérald-Godin",
+        period: "April 2024 — Sept 2025",
+        color: "oklch(0.87 0.18 195)",
+      },
+      {
+        degree: "DEC — Social Sciences",
+        school: "Vanier College",
+        period: "Sept 2009 — May 2014",
+        color: "oklch(0.85 0.22 155)",
+      },
+      {
+        degree: "High School Diploma",
+        school: "Collège Mont-Royal",
+        period: "Sept 2004 — June 2009",
+        color: "oklch(0.85 0.22 155)",
+      },
+    ],
   },
-  {
-    type: "work",
-    title: "Chauffeur-Livreur",
-    company: "Recyclage Philtex",
-    period: "Juin 2014 — Mai 2019",
-    description: "Planification des routes de ramassages chez les clients. Communication régulière avec les clients pour scheduler les ramassages.",
-    tags: ["Logistique", "Communication", "Organisation"],
-    color: "oklch(0.7 0.28 295)",
-  },
-];
-
-const EDUCATION = [
-  {
-    degree: "AEC — Programmation en technologies Web",
-    school: "Collège Gérald-Godin",
-    period: "Avril 2024 — Sept 2025",
-    color: "oklch(0.87 0.18 195)",
-  },
-  {
-    degree: "DEC — Sciences Humaines",
-    school: "Vanier College",
-    period: "Sept 2009 — Mai 2014",
-    color: "oklch(0.85 0.22 155)",
-  },
-  {
-    degree: "Diplôme d'études secondaires",
-    school: "Collège Mont-Royal",
-    period: "Sept 2004 — Juin 2009",
-    color: "oklch(0.85 0.22 155)",
-  },
-];
+};
 
 export default function ExperienceSection() {
+  const { lang } = useLang();
+  const t = DATA[lang];
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -94,7 +167,7 @@ export default function ExperienceSection() {
               textShadow: "0 0 20px oklch(0.87 0.18 195 / 0.3)",
             }}
           >
-            Parcours
+            {t.title}
           </h2>
           <div
             className="mt-2 h-px w-24"
@@ -112,7 +185,7 @@ export default function ExperienceSection() {
               className="text-xs mb-5"
               style={{ color: "oklch(0.87 0.18 195)", fontFamily: "JetBrains Mono, monospace" }}
             >
-              // EXPÉRIENCES DE TRAVAIL
+              {t.workLabel}
             </motion.div>
 
             <div className="relative">
@@ -123,7 +196,7 @@ export default function ExperienceSection() {
               />
 
               <div className="space-y-6 pl-8">
-                {EXPERIENCES.map((exp, i) => (
+                {t.experiences.map((exp, i) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, x: -20 }}
@@ -221,7 +294,7 @@ export default function ExperienceSection() {
               className="text-xs mb-5"
               style={{ color: "oklch(0.7 0.28 295)", fontFamily: "JetBrains Mono, monospace" }}
             >
-              // ÉDUCATION
+              {t.eduLabel}
             </motion.div>
 
             <div className="relative">
@@ -231,7 +304,7 @@ export default function ExperienceSection() {
               />
 
               <div className="space-y-5 pl-8">
-                {EDUCATION.map((edu, i) => (
+                {t.education.map((edu, i) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, x: 20 }}
@@ -291,9 +364,7 @@ export default function ExperienceSection() {
               }}
             >
               {[
-                { value: "1+", label: "an d'exp." },
-                { value: "10+", label: "technos" },
-                { value: "3+", label: "projets" },
+                ...t.stats,
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
                   <div
