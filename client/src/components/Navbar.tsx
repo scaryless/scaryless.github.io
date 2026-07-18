@@ -60,7 +60,7 @@ export default function Navbar({ activeSection, onNavigate }: NavbarProps) {
               fontFamily: "JetBrains Mono, monospace",
             }}
           >
-            SAMUEL_OS v2.0
+            SAMUEL_OS v2.1
           </div>
           <div className="text-xs mt-1" style={{ color: "oklch(0.85 0.22 155)" }}>
             ● ONLINE
@@ -141,7 +141,7 @@ export default function Navbar({ activeSection, onNavigate }: NavbarProps) {
           }}
         >
           <div>Montréal, QC 🇨🇦</div>
-          <div className="mt-1">© 2025 Samuel Cariélus</div>
+          <div className="mt-1">© {new Date().getFullYear()} Samuel Cariélus</div>
         </div>
       </nav>
 

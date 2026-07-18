@@ -394,7 +394,7 @@ export default function ContactSection() {
             className="text-xs"
             style={{ color: "oklch(0.35 0.02 200)", fontFamily: "JetBrains Mono, monospace" }}
           >
-            © 2025 Samuel Cariélus — SAMUEL_OS v2.0 — Montréal, QC, Canada
+            © {new Date().getFullYear()} Samuel Cariélus — SAMUEL_OS v2.1 — Montréal, QC, Canada
           </div>
 
         </motion.div>
