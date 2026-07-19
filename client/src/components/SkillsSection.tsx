@@ -60,10 +60,12 @@ const TECH_SKILLS = [
 ];
 
 const TOOLS = [
-  "Claude Code", "Cursor", "API Claude", "N8N",
-  "Prompt Engineering", "FastAPI", "Supabase",
-  "VS Code", "Git", "Linux (Ubuntu/Debian)", "macOS",
-  "Expo", "ARIA / Accessibilité",
+  "Claude Code", "Cursor", "API Claude (vision)", "Prompt Engineering",
+  "N8N", "FastAPI", "Supabase", "PostgreSQL", "Redis", "Stripe API",
+  "Git / GitHub", "GitHub Actions (CI/CD)", "GitHub Pages", "Vite",
+  "Tailwind CSS", "Framer Motion", "Expo", "Maestro (tests E2E)",
+  "Xcode", "VS Code", "Linux (Ubuntu/Debian)", "macOS",
+  "ARIA / Accessibilité",
 ];
 
 export default function SkillsSection() {
@@ -210,44 +212,6 @@ export default function SkillsSection() {
               </div>
             </motion.div>
 
-            {/* Tools */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={visible ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="p-5"
-              style={{
-                background: "oklch(0.11 0.015 265)",
-                border: "1px solid oklch(0.85 0.22 155 / 0.2)",
-              }}
-            >
-              <div
-                className="text-xs mb-3"
-                style={{ color: "oklch(0.85 0.22 155)", fontFamily: "JetBrains Mono, monospace" }}
-              >
-                {t.toolsLabel}
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {TOOLS.map((tool, i) => (
-                  <motion.span
-                    key={tool}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={visible ? { opacity: 1, scale: 1 } : {}}
-                    transition={{ duration: 0.2, delay: 0.5 + i * 0.05 }}
-                    className="px-2 py-0.5 text-xs"
-                    style={{
-                      fontFamily: "JetBrains Mono, monospace",
-                      color: "oklch(0.85 0.22 155)",
-                      border: "1px solid oklch(0.85 0.22 155 / 0.3)",
-                      background: "oklch(0.85 0.22 155 / 0.05)",
-                    }}
-                  >
-                    {tool}
-                  </motion.span>
-                ))}
-              </div>
-            </motion.div>
-
             {/* Languages */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -278,6 +242,44 @@ export default function SkillsSection() {
             </motion.div>
           </div>
         </div>
+
+        {/* Tools — pleine largeur */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={visible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="mt-6 p-5"
+          style={{
+            background: "oklch(0.11 0.015 265)",
+            border: "1px solid oklch(0.85 0.22 155 / 0.2)",
+          }}
+        >
+          <div
+            className="text-xs mb-3"
+            style={{ color: "oklch(0.85 0.22 155)", fontFamily: "JetBrains Mono, monospace" }}
+          >
+            {t.toolsLabel}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {TOOLS.map((tool, i) => (
+              <motion.span
+                key={tool}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={visible ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.2, delay: 0.5 + i * 0.03 }}
+                className="px-2 py-0.5 text-xs"
+                style={{
+                  fontFamily: "JetBrains Mono, monospace",
+                  color: "oklch(0.85 0.22 155)",
+                  border: "1px solid oklch(0.85 0.22 155 / 0.3)",
+                  background: "oklch(0.85 0.22 155 / 0.05)",
+                }}
+              >
+                {tool}
+              </motion.span>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

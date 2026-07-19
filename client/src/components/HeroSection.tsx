@@ -15,7 +15,7 @@ const TEXTS = {
       "Mobile App Builder",
       "Passionné d'IA & Machine Learning",
     ],
-    bio: "Curieux depuis l'enfance, du genre à vouloir comprendre la machine plutôt que juste m'en servir. Je pense, je code et je livre. Diplômé de l'AEC en programmation en technologies Web du Collège Gérald-Godin, je travaille comme développeur solo avec une approche AI-first : Claude Code, Cursor et les API de LLM font partie de mon quotidien. Applications web, chatbots, automatisation pour de vrais clients, dont FactureFlow, mon pipeline d'extraction de factures. Je cherche maintenant une équipe pour livrer plus grand.",
+    bio: "Curieux depuis l'enfance, du genre à vouloir comprendre la machine plutôt que juste m'en servir. Je pense, je code et je livre. Diplômé de l'AEC en programmation en technologies Web du Collège Gérald-Godin, je travaille comme développeur solo. Claude Code, Cursor et les API de LLM font partie de mon quotidien. Applications web, chatbots, automatisation pour de vrais clients, dont FactureFlow, mon pipeline d'extraction de factures. Je cherche maintenant une équipe pour livrer plus grand.",
     scroll: "scroll pour explorer",
   },
   en: {
@@ -25,7 +25,7 @@ const TEXTS = {
       "Mobile App Builder",
       "AI & Machine Learning Enthusiast",
     ],
-    bio: "Curious since childhood, the kind of kid who wanted to understand the machine rather than just use it. I think, I code, I ship. A graduate of the Web Technologies Programming program (AEC) at Collège Gérald-Godin, I work as a solo developer with an AI-first approach: Claude Code, Cursor and LLM APIs are part of my daily workflow. Web apps, chatbots and automation for real clients, including FactureFlow, my invoice extraction pipeline. Now looking for a team to ship bigger things.",
+    bio: "Curious since childhood, the kind of kid who wanted to understand the machine rather than just use it. I think, I code, I ship. A graduate of the Web Technologies Programming program (AEC) at Collège Gérald-Godin, I work as a solo developer. Claude Code, Cursor and LLM APIs are part of my daily workflow. Web apps, chatbots and automation for real clients, including FactureFlow, my invoice extraction pipeline. Now looking for a team to ship bigger things.",
     scroll: "scroll to explore",
   },
 };

@@ -14,13 +14,12 @@ const DATA = {
     stats: [
       { value: "2+", label: "ans d'exp. dev" },
       { value: "15+", label: "technos" },
-      { value: "AI-first", label: "approche" },
     ],
     experiences: [
       {
         type: "work",
-        title: "Fondateur & Développeur Full-Stack",
-        company: "Évolution B inc",
+        title: "Développeur Full-Stack",
+        company: "Freelance",
         period: "Mars 2024 — Aujourd'hui",
         description: "Conception et développement d'applications web et de chatbots d'IA pour différents clients, de l'analyse du besoin jusqu'à la mise en production. Gestion des projets en autonomie complète : échanges avec les clients, présentation des solutions, livraison et suivi.",
         tags: ["IA", "Chatbots", "API REST", "Autonomie"],
@@ -73,13 +72,12 @@ const DATA = {
     stats: [
       { value: "2+", label: "yrs dev exp." },
       { value: "15+", label: "techs" },
-      { value: "AI-first", label: "approach" },
     ],
     experiences: [
       {
         type: "work",
-        title: "Founder & Full-Stack Developer",
-        company: "Évolution B inc",
+        title: "Full-Stack Developer",
+        company: "Freelance",
         period: "March 2024 — Today",
         description: "Design and development of web applications and AI chatbots for various clients, from needs analysis to production. Fully autonomous project management: client communication, solution presentations, delivery and follow-up.",
         tags: ["AI", "Chatbots", "REST API", "Autonomy"],
@@ -357,7 +355,7 @@ export default function ExperienceSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={visible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.8 }}
-              className="mt-6 p-4 grid grid-cols-3 gap-3"
+              className="mt-6 p-4 grid grid-cols-2 gap-3"
               style={{
                 background: "oklch(0.11 0.015 265)",
                 border: "1px solid oklch(0.87 0.18 195 / 0.15)",
